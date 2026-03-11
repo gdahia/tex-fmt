@@ -112,10 +112,10 @@
 %% Additional packages, and their options.
 %%
 %%%%%
-\RequirePackage{graphicx}           % Required for the UC Logo (on the
-% title page)
-\RequirePackage{calc}               % Used for calculating margins and
-% laying out the title page
+\RequirePackage{graphicx}           % Required for the UC Logo (on
+% the title page)
+\RequirePackage{calc}               % Used for calculating margins
+% and laying out the title page
 
 % Create the index
 \ifcam@index
@@ -176,10 +176,10 @@
   % Horizontal spacing
   \setlength{\textwidth}{\paperwidth-\cam@oddmargin-\cam@evenmargin}
   % text takes the remaining width (210 - inner - outer)
-  \setlength{\oddsidemargin}{\cam@oddmargin-1in}   % Counter the LaTeX
-  % 1in margin
-  \setlength{\evensidemargin}{\cam@evenmargin-1in} % Counter the LaTeX
-  % 1in margin
+  \setlength{\oddsidemargin}{\cam@oddmargin-1in}   % Counter the
+  % LaTeX 1in margin
+  \setlength{\evensidemargin}{\cam@evenmargin-1in} % Counter the
+  % LaTeX 1in margin
   \setlength{\marginparwidth}{\cam@evenmargin-8mm} % the margin only
   % has 'outer' space available, so we have to make it a bit thinner.
   \setlength{\marginparsep}{3mm}
@@ -187,12 +187,12 @@
   % Vertical spacing
   \setlength{\headheight}{5mm}      % The height of the box where the
   % heading text lives
-  \setlength{\headsep}{5mm}         % The distance between the heading
-  % and the top of the text
+  \setlength{\headsep}{5mm}         % The distance between the
+  % heading and the top of the text
   \setlength{\topmargin}{\cam@topmargin-\headheight-\headsep-1in} %
   % Counter the LaTeX 1in margin
 
-  \setlength{\textheight}{\paperheight-\cam@topmargin-1.7\cam@bottommargin}   %
+  \setlength{\textheight}{\paperheight-\cam@topmargin-1.7\cam@bottommargin}
   % text takes the remaining height (297 - top margin - bottom margin)
   \setlength{\footskip}{.7\cam@bottommargin} % The distance from the
   % bottom of the text to the bottom of the footer
@@ -442,12 +442,12 @@
     University of Cambridge
     or any other University or similar institution except as declared
     in the Preface and
-    specified in the text. I further state that no substantial part of
-    my dissertation has
+    specified in the text. I further state that no substantial part
+    of my dissertation has
     already been submitted, or is being concurrently submitted, for
     any such degree, diploma
-    or other qualification at the University of Cambridge or any other
-    University or similar
+    or other qualification at the University of Cambridge or any
+    other University or similar
     institution except as declared in the Preface and specified in the text.
     This dissertation does not exceed the prescribed limit of 60\,000 words.
 

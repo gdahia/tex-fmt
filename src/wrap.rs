@@ -112,6 +112,47 @@ fn find_wrap_point(
     args: &Args,
     pattern: &Pattern,
 ) -> Option<usize> {
+    if !args.semanticwrap {
+        let mut wrap_point: Option<usize> = None;
+        let contains_verb =
+            pattern.contains_verb && VERBS.iter().any(|x| line.contains(x));
+        let verb_start: Option<usize> = contains_verb
+            .then(|| VERBS.iter().filter_map(|&x| line.find(x)).min().unwrap());
+        let verb_end = get_verb_end(verb_start, line);
+        let mut after_non_percent = verb_start == Some(0);
+        let wrap_boundary = args.wrapmin.saturating_sub(indent_length);
+        let line_len = line.len();
+        let mut prev_c: Option<char> = None;
+
+        for (i_char, (i_byte, c)) in line.char_indices().enumerate() {
+            if i_char >= wrap_boundary && wrap_point.is_some() {
+                break;
+            }
+
+            let inside_verb =
+                is_inside_verb(i_byte, contains_verb, verb_start, verb_end);
+            let can_wrap = args.wrap_chars.contains(&c)
+                && prev_c != Some('\\')
+                && !inside_verb
+                && (i_byte + 1 < line_len);
+
+            if can_wrap {
+                if after_non_percent {
+                    let wrap_byte = i_byte + c.len_utf8() - 1;
+                    if wrap_byte + 1 < line_len {
+                        wrap_point = Some(wrap_byte);
+                    }
+                }
+            } else if c != '%' {
+                after_non_percent = true;
+            }
+
+            prev_c = Some(c);
+        }
+
+        return wrap_point;
+    }
+
     let contains_verb =
         pattern.contains_verb && VERBS.iter().any(|x| line.contains(x));
     let verb_start: Option<usize> = contains_verb

@@ -741,7 +741,8 @@ node/.append style={transform shape},}}
       \protected@edef\@tempa{%
         \noexpand\path[\estyle,LocalEdgeLW,LocalEdgeOpacity,LocalEdgeColor,
         LocalArrow,\cmdNW@edge@style]
-        (#2) edge [in=-\cmdNW@edge@loopshape/2+\cmdNW@edge@loopposition,
+        (#2) edge
+        [in=-\cmdNW@edge@loopshape/2+\cmdNW@edge@loopposition,
           out=\cmdNW@edge@loopshape/2+\cmdNW@edge@loopposition,loop,
       distance=\cmdNW@edge@loopsize,] \edge@Label (#3)}%
       \@tempa;

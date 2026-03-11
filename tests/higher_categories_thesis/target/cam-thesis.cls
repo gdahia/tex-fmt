@@ -193,18 +193,7 @@
   % Counter the LaTeX 1in margin
 
   \setlength{\textheight}{\paperheight-\cam@topmargin-1.7\cam@bottommargin}   %
-  % text
-  % takes
-  % the
-  % remaining
-  % height
-  % (297
-  % -
-  % top
-  % margin
-  % -
-  % bottom
-  % margin)
+  % text takes the remaining height (297 - top margin - bottom margin)
   \setlength{\footskip}{.7\cam@bottommargin} % The distance from the
   % bottom of the text to the bottom of the footer
 }

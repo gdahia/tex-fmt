@@ -124,6 +124,7 @@ fn find_wrap_point(
     let mut sentence_wrap_point: Option<usize> = None;
     let mut clause_wrap_point: Option<usize> = None;
     let mut space_wrap_point: Option<usize> = None;
+    let mut space_limit_wrap_point: Option<usize> = None;
     let mut fallback_wrap_point: Option<(usize, WrapKind)> = None;
     let mut prev_c: Option<char> = None;
 
@@ -147,6 +148,7 @@ fn find_wrap_point(
                                 clause_wrap_point = Some(wrap_byte)
                             }
                             WrapKind::Space => {
+                                space_limit_wrap_point = Some(wrap_byte);
                                 if i_char <= wrap_boundary {
                                     space_wrap_point = Some(wrap_byte);
                                 }
@@ -156,7 +158,7 @@ fn find_wrap_point(
 
                     fallback_wrap_point = Some(match fallback_wrap_point {
                         Some((current_byte, current_kind))
-                            if current_kind > wrap_kind =>
+                            if current_kind >= wrap_kind =>
                         {
                             (current_byte, current_kind)
                         }
@@ -173,6 +175,7 @@ fn find_wrap_point(
     sentence_wrap_point
         .or(clause_wrap_point)
         .or(space_wrap_point)
+        .or(space_limit_wrap_point)
         .or_else(|| fallback_wrap_point.map(|(wrap_byte, _)| wrap_byte))
 }
 

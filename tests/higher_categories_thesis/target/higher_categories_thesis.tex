@@ -956,21 +956,8 @@ type theory \Catt~\cite{finster2017type}, a type theory for weak
 \(\infty\)-categories, using techniques from a definition of weak
 \(\infty\)-categories due to
 \citeauthor{maltsiniotis2010grothendieck}~\cite{maltsiniotis2010grothendieck}
-which
-itself
-is
-based
-on
-an
-earlier
-definition
-of
-\(\infty\)-groupoids
-which
-was
-given
-by
-\citeauthor{PursuingStacks}~\cite{PursuingStacks}.
+which itself is based on an earlier definition of \(\infty\)-groupoids
+which was given by \citeauthor{PursuingStacks}~\cite{PursuingStacks}.
 It was later shown~\cite{benjamin2021globular} that type-theoretic
 models of \Catt coincide with \(\infty\)-categories defined by
 \citeauthor{maltsiniotis2010grothendieck}.
@@ -1114,18 +1101,9 @@ While there are many differing definitions of \(\infty\)-categories
 theory \Catt~\cite{finster2017type}, which are known to be equivalent
 to a definition of
 \citeauthor{maltsiniotis2010grothendieck}~\cite{maltsiniotis2010grothendieck}
-based
-off
-an
-earlier
-definition
-by
-\citeauthor{PursuingStacks}~\cite{PursuingStacks},
-which
-we
-introduce
-in
-\cref{sec:weak}.
+based off an earlier definition by
+\citeauthor{PursuingStacks}~\cite{PursuingStacks}, which we introduce
+in \cref{sec:weak}.
 In \cref{sec:type-theory-catt}, we define the type theory \Catt,
 similarly to how it was originally defined.
 
@@ -2168,16 +2146,7 @@ the operations and axioms of an \(\infty\)-category.
 In this thesis, we will work with the type theory \Catt, which is
 based on a definition of \(\infty\)-categories due to
 \citeauthor{maltsiniotis2010grothendieck}~\cite{maltsiniotis2010grothendieck},
-which
-is
-itself
-based
-on
-a
-definition
-of
-\(\infty\)-groupoid
-by
+which is itself based on a definition of \(\infty\)-groupoid by
 \citeauthor{PursuingStacks}~\cite{PursuingStacks}.
 We will sketch the ideas behind these definitions here, and give a
 definition of \Catt in \cref{sec:type-theory-catt}.
@@ -3600,14 +3569,7 @@ It also contains the following proposition.
   which holds for all \(\sigma : \arr \Theta \star \Delta\) and is
   proven in
   \funcn{Catt.Syntax.Properties}{↓-comp}{\textsf{\(\downarrow\)-comp}}, and the
-  line
-  before
-  is
-  given
-  by
-  the
-  inductive
-  hypothesis.
+  line before is given by the inductive hypothesis.
 
   If instead we had \(A = \arr s {A'} t\), then:
   \begin{align*}
@@ -6529,11 +6491,7 @@ For the second we need the following lemma.
   The details of this induction appear in the formalisation in the
   function
   \funcn{Catt.Dyck.Pruning.Support}{π-boundary-vs}{\(\pi\)-boundary-vs} which
-  appears
-  in
-  the
-  module
-  \module{Catt.Dyck.Pruning.Support}.
+  appears in the module \module{Catt.Dyck.Pruning.Support}.
 
   The equation \(\Supp(\pi_p) = \Var(\lfloor \mathcal{D} \sslash p
   \rfloor)\) follows from \cref{prop:vs-sub,lem:bdry-full}, by setting
@@ -11027,17 +10985,10 @@ The results of this section are stated in the following lemma.
 \begin{proof}
   See the functions
   \func{Catt.Tree.Insertion.Properties}{insertion-tree-inserted-branch} and
-  \func{Catt.Tree.Insertion.Properties}{label-from-inserted-branch}
-  in
-  the
-  formalisation
-  module
-  \module{Catt.Tree.Insertion.Properties},
-  and
-  \funcn{Catt.Typing.Insertion.Equality}{22361}{κ-inserted-branch}
-  in
-  module
-  \module{Catt.Typing.Insertion.Equality}.
+  \func{Catt.Tree.Insertion.Properties}{label-from-inserted-branch} in
+  the formalisation module \module{Catt.Tree.Insertion.Properties},
+  and \funcn{Catt.Typing.Insertion.Equality}{22361}{κ-inserted-branch}
+  in module \module{Catt.Typing.Insertion.Equality}.
 \end{proof}
 
 \chapter{Semistrict variants of \Catt}
@@ -12311,26 +12262,10 @@ theory as \emph{groupoidal \Cattsua}.
 \begin{proof}
   By
   \cref{prop:dr-weak,prop:dr-susp,prop:dr-sub,prop:ecr-props,prop:insert-tame},
-  each
-  of
-  the
-  disc
-  removal,
-  endo-coherence
-  removal,
-  and
-  insertion
-  sets
-  satisfy
-  the
-  weakening,
-  suspension,
-  and
-  \(\sua\)-substitution
-  conditions.
+  each of the disc removal, endo-coherence removal, and insertion sets
+  satisfy the weakening, suspension, and \(\sua\)-substitution conditions.
   It follows that \(\sua\) satisfies the weakening, suspension, and
-  substitution conditions.
-  Hence, \sua is tame.
+  substitution conditions. Hence, \sua is tame.
 
   To prove that the support condition holds for \sua, we use the
   strategy introduced in \cref{sec:further-conditions} and instead
@@ -13368,9 +13303,7 @@ to the base syntax of \Catt. It is given by the following grammar:
   {\color{Diag2}\mathsf{id}_n} \mid {\color{Diag2}\mathsf{comp}_T}\\
   &(\text{Terms})&&\color{Diag2}s,t&&{}::={}&&{\color{Diag2}\mathsf{var}_p}
   \mid
-  {\color{Diag2}H
-    \sub
-  L}\\
+  {\color{Diag2}H \sub L}\\
   &(\text{Labellings})&&\color{Diag2}L
   &&{}::={}&&{\color{Diag2}\mathsf{Tree}(s)}\\
   &(\text{Types})&&{\color{Diag2}A}&&{}::={}&&

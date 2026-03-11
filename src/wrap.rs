@@ -28,7 +28,7 @@ pub fn needs_wrap(line: &str, indent_length: usize, args: &Args) -> bool {
 }
 
 fn get_wrap_kind(c: char, args: &Args) -> Option<WrapKind> {
-    if matches!(c, '.' | '!' | '?') {
+    if args.semanticwrap && matches!(c, '.' | '!' | '?') {
         Some(WrapKind::Sentence)
     } else if matches!(c, ',' | ';' | ':') && args.wrap_chars.contains(&c) {
         Some(WrapKind::Clause)

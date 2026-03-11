@@ -49,6 +49,7 @@ pub fn get_cli_args(matches: Option<ArgMatches>) -> OptionArgs {
     } else {
         None
     };
+    let semanticwrap = get_flag(&arg_matches, "semanticwrap");
     let tabchar = if arg_matches.get_flag("usetabs") {
         Some(TabChar::Tab)
     } else {
@@ -68,6 +69,7 @@ pub fn get_cli_args(matches: Option<ArgMatches>) -> OptionArgs {
         print: get_flag(&arg_matches, "print"),
         fail_on_change: get_flag(&arg_matches, "fail-on-change"),
         wrap,
+        semanticwrap,
         wraplen: arg_matches.get_one::<usize>("wraplen").copied(),
         wrapmin: None,
         tabsize: arg_matches.get_one::<u8>("tabsize").copied(),

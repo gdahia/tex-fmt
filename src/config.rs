@@ -146,6 +146,7 @@ pub fn get_config_args(
             .get("fail-on-change")
             .map(|x| x.as_bool().unwrap()),
         wrap: config.get("wrap").map(|x| x.as_bool().unwrap()),
+        semanticwrap: config.get("semanticwrap").map(|x| x.as_bool().unwrap()),
         wraplen: config
             .get("wraplen")
             .map(|x| x.as_integer().unwrap().try_into().unwrap()),

@@ -189,6 +189,7 @@ tex-fmt --recursive                # recursively format files in current directo
 tex-fmt --recursive dir/           # recursively format files in dir
 tex-fmt --fail-on-change file.tex  # format file.tex and return exit-code 1 if overwritten
 tex-fmt --nowrap file.tex          # do not wrap long lines
+tex-fmt --semanticwrap file.tex    # prefer semantic line breaks while wrapping
 tex-fmt --stdin                    # read from stdin and print to stdout
 tex-fmt --help                     # view help information
 ```
@@ -353,6 +354,7 @@ The following arguments can be passed on the command line.
 | `--fail-on-change`     | `-f`  |         | Fail if files are modified |
 | `--recursive`          | `-r`  |         | Recursively search for files to format |
 | `--nowrap`             | `-n`  |         | Do not wrap long lines |
+| `--semanticwrap`       |       |         | Prefer semantic line breaks when wrapping |
 | `--wraplen <N>`        | `-l`  | `80`    | Line length for wrapping |
 | `--tabsize <N>`        | `-t`  | `2`     | Number of characters to use as tab size |
 | `--usetabs`            |       |         | Use tabs instead of spaces for indentation |
@@ -379,6 +381,7 @@ The first example in each row is the default value.
 | `print`          | bool     | `false`                | Print to stdout, do not modify files |
 | `fail-on-change` | bool     | `false`                | Fail if files are modified |
 | `wrap`           | bool     | `true`                 | Wrap long lines |
+| `semanticwrap`   | bool     | `false`, `true`        | Prefer semantic line breaks when wrapping |
 | `wraplen`        | int      | `80`, `100`            | Line length for wrapping |
 | `wrapmin`        | int      | `70`, `90`             | Target minimum length for line wrapping |
 | `tabsize`        | int      | `2`, `4`               | Number of characters to use as tab size |

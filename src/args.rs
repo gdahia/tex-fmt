@@ -25,6 +25,8 @@ pub struct Args {
     pub fail_on_change: bool,
     /// Wrap long lines
     pub wrap: bool,
+    /// Prefer semantic line breaks when wrapping
+    pub semanticwrap: bool,
     /// Maximum allowed line length
     pub wraplen: usize,
     /// Wrap lines longer than this
@@ -67,6 +69,8 @@ pub struct OptionArgs {
     pub fail_on_change: Option<bool>,
     #[merge(strategy= merge::option::overwrite_none)]
     pub wrap: Option<bool>,
+    #[merge(strategy= merge::option::overwrite_none)]
+    pub semanticwrap: Option<bool>,
     #[merge(strategy= merge::option::overwrite_none)]
     pub wraplen: Option<usize>,
     #[merge(strategy= merge::option::overwrite_none)]
@@ -142,6 +146,7 @@ impl Default for OptionArgs {
             print: Some(false),
             fail_on_change: Some(false),
             wrap: Some(true),
+            semanticwrap: Some(false),
             wraplen: Some(80),
             wrapmin: None,
             tabsize: Some(2),
@@ -169,6 +174,7 @@ impl OptionArgs {
             print: None,
             fail_on_change: None,
             wrap: None,
+            semanticwrap: None,
             wraplen: None,
             wrapmin: None,
             tabsize: None,
@@ -226,6 +232,7 @@ impl Args {
             print: args.print.unwrap(),
             fail_on_change: args.fail_on_change.unwrap(),
             wrap: args.wrap.unwrap(),
+            semanticwrap: args.semanticwrap.unwrap(),
             wraplen: args.wraplen.unwrap(),
             wrapmin,
             tabsize: args.tabsize.unwrap(),
@@ -375,6 +382,7 @@ impl fmt::Display for Args {
         display_arg_line(f, "print", &self.print.to_string())?;
         display_arg_line(f, "fail-on-change", &self.print.to_string())?;
         display_arg_line(f, "wrap", &self.wrap.to_string())?;
+        display_arg_line(f, "semanticwrap", &self.semanticwrap.to_string())?;
         display_arg_line(f, "wraplen", &self.wraplen.to_string())?;
         display_arg_line(f, "wrapmin", &self.wrapmin.to_string())?;
         display_arg_line(f, "tabsize", &self.tabsize.to_string())?;

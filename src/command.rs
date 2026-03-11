@@ -48,6 +48,12 @@ pub fn get_cli_command() -> Command {
                 .help("Line length for wrapping [default: 80]"),
         )
         .arg(
+            Arg::new("semanticwrap")
+                .long("semanticwrap")
+                .action(SetTrue)
+                .help("Prefer semantic line breaks when wrapping"),
+        )
+        .arg(
             Arg::new("tabsize")
                 .short('t')
                 .long("tabsize")

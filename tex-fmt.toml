@@ -2,6 +2,7 @@
 check = false
 print = false
 wrap = true
+semanticwrap = false
 wraplen = 80
 tabsize = 2
 tabchar = "space"

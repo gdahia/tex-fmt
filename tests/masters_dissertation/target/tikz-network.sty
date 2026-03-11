@@ -729,20 +729,31 @@ node/.append style={transform shape},}}
         }
         \protected@edef\@tempa{%
           \noexpand\draw[\estyle,LocalEdgeLW,LocalEdgeOpacity,LocalEdgeColor,
-        LocalArrow,\cmdNW@edge@style] (#2) -- \edge@pts (#3)}      \@tempa;
+          LocalArrow,\cmdNW@edge@style]
+          (#2)
+          --
+          \edge@pts
+        (#3)}
+        \@tempa;
       }{
         \protected@edef\@tempa{%
           \noexpand\path[\estyle,LocalEdgeLW,LocalEdgeOpacity,LocalEdgeColor,
-          LocalArrow,\cmdNW@edge@style] (#2) edge [bend left =
-        \cmdNW@edge@bend] \edge@Label (#3)}%
+          LocalArrow,\cmdNW@edge@style]
+          (#2)
+          edge
+          [bend
+            left
+            =
+          \cmdNW@edge@bend]
+          \edge@Label
+        (#3)}%
         \@tempa;
       }
     }{% Self loop
       \protected@edef\@tempa{%
         \noexpand\path[\estyle,LocalEdgeLW,LocalEdgeOpacity,LocalEdgeColor,
         LocalArrow,\cmdNW@edge@style]
-        (#2) edge
-        [in=-\cmdNW@edge@loopshape/2+\cmdNW@edge@loopposition,
+        (#2) edge [in=-\cmdNW@edge@loopshape/2+\cmdNW@edge@loopposition,
           out=\cmdNW@edge@loopshape/2+\cmdNW@edge@loopposition,loop,
       distance=\cmdNW@edge@loopsize,] \edge@Label (#3)}%
       \@tempa;

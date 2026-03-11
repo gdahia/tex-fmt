@@ -14,28 +14,42 @@ pub const TEXT_LINE_START: &str = "";
 /// String slice to start wrapped comment lines
 pub const COMMENT_LINE_START: &str = "% ";
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+enum WrapKind {
+    Space,
+    Clause,
+    Sentence,
+}
+
 /// Check if a line needs wrapping
 #[must_use]
 pub fn needs_wrap(line: &str, indent_length: usize, args: &Args) -> bool {
     args.wrap && (line.chars().count() + indent_length > args.wraplen)
 }
 
+fn get_wrap_kind(c: char, args: &Args) -> Option<WrapKind> {
+    if matches!(c, '.' | '!' | '?') {
+        Some(WrapKind::Sentence)
+    } else if matches!(c, ',' | ';' | ':') && args.wrap_chars.contains(&c) {
+        Some(WrapKind::Clause)
+    } else if args.wrap_chars.contains(&c) {
+        Some(WrapKind::Space)
+    } else {
+        None
+    }
+}
+
 fn is_wrap_point(
-    i_byte: usize,
     c: char,
     prev_c: Option<char>,
     inside_verb: bool,
-    line_len: usize,
     args: &Args,
-) -> bool {
-    // Character c must be a valid wrapping character
-    args.wrap_chars.contains(&c)
-        // Must not be preceded by '\'
-        && prev_c != Some('\\')
-        // Do not break inside a \verb|...|
-        && !inside_verb
-        // No point breaking at the end of the line
-        && (i_byte + 1 < line_len)
+) -> Option<WrapKind> {
+    if inside_verb || (c == ' ' && prev_c == Some('\\')) {
+        None
+    } else {
+        get_wrap_kind(c, args)
+    }
 }
 
 fn get_verb_end(verb_byte_start: Option<usize>, line: &str) -> Option<usize> {
@@ -60,6 +74,36 @@ fn is_inside_verb(
     }
 }
 
+fn get_boundary_end(
+    i_byte: usize,
+    c: char,
+    line: &str,
+    wrap_kind: WrapKind,
+) -> Option<usize> {
+    if wrap_kind == WrapKind::Space {
+        return line[i_byte + c.len_utf8()..]
+            .chars()
+            .any(|next| !next.is_whitespace())
+            .then_some(i_byte + c.len_utf8() - 1);
+    }
+
+    let mut boundary_end = i_byte + c.len_utf8() - 1;
+    let mut seen_whitespace = false;
+    let after = &line[boundary_end + 1..];
+
+    for (offset, next) in after.char_indices() {
+        if matches!(next, '"' | '\'' | ')' | ']' | '}') && !seen_whitespace {
+            boundary_end = i_byte + c.len_utf8() + offset + next.len_utf8() - 1;
+        } else if next.is_whitespace() {
+            seen_whitespace = true;
+        } else {
+            return seen_whitespace.then_some(boundary_end);
+        }
+    }
+
+    None
+}
+
 /// Find the best place to break a long line.
 /// Provided as a *byte* index, not a *char* index.
 fn find_wrap_point(
@@ -68,8 +112,6 @@ fn find_wrap_point(
     args: &Args,
     pattern: &Pattern,
 ) -> Option<usize> {
-    let mut wrap_point: Option<usize> = None;
-    let mut prev_c: Option<char> = None;
     let contains_verb =
         pattern.contains_verb && VERBS.iter().any(|x| line.contains(x));
     let verb_start: Option<usize> = contains_verb
@@ -77,25 +119,49 @@ fn find_wrap_point(
 
     let verb_end = get_verb_end(verb_start, line);
     let mut after_non_percent = verb_start == Some(0);
-    let wrap_boundary = args.wrapmin - indent_length;
-    let line_len = line.len();
+    let wrap_boundary = args.wrapmin.saturating_sub(indent_length);
+    let wrap_limit = args.wraplen.saturating_sub(indent_length);
+    let mut sentence_wrap_point: Option<usize> = None;
+    let mut clause_wrap_point: Option<usize> = None;
+    let mut space_wrap_point: Option<usize> = None;
+    let mut fallback_wrap_point: Option<(usize, WrapKind)> = None;
+    let mut prev_c: Option<char> = None;
 
     for (i_char, (i_byte, c)) in line.char_indices().enumerate() {
-        if i_char >= wrap_boundary && wrap_point.is_some() {
-            break;
-        }
         // Special wrapping for lines containing \verb|...|
         let inside_verb =
             is_inside_verb(i_byte, contains_verb, verb_start, verb_end);
-        if is_wrap_point(i_byte, c, prev_c, inside_verb, line_len, args) {
+        if let Some(wrap_kind) = is_wrap_point(c, prev_c, inside_verb, args) {
             if after_non_percent {
-                // Get index of the byte after which
-                // line break will be inserted.
-                // Note this may not be a valid char index.
-                let wrap_byte = i_byte + c.len_utf8() - 1;
-                // Don't wrap here if this is the end of the line anyway
-                if wrap_byte + 1 < line_len {
-                    wrap_point = Some(wrap_byte);
+                if let Some(wrap_byte) =
+                    get_boundary_end(i_byte, c, line, wrap_kind)
+                {
+                    if i_char <= wrap_limit {
+                        match wrap_kind {
+                            WrapKind::Sentence => {
+                                if sentence_wrap_point.is_none() {
+                                    sentence_wrap_point = Some(wrap_byte);
+                                }
+                            }
+                            WrapKind::Clause => {
+                                clause_wrap_point = Some(wrap_byte)
+                            }
+                            WrapKind::Space => {
+                                if i_char <= wrap_boundary {
+                                    space_wrap_point = Some(wrap_byte);
+                                }
+                            }
+                        }
+                    }
+
+                    fallback_wrap_point = Some(match fallback_wrap_point {
+                        Some((current_byte, current_kind))
+                            if current_kind > wrap_kind =>
+                        {
+                            (current_byte, current_kind)
+                        }
+                        _ => (wrap_byte, wrap_kind),
+                    });
                 }
             }
         } else if c != '%' {
@@ -104,7 +170,10 @@ fn find_wrap_point(
         prev_c = Some(c);
     }
 
-    wrap_point
+    sentence_wrap_point
+        .or(clause_wrap_point)
+        .or(space_wrap_point)
+        .or_else(|| fallback_wrap_point.map(|(wrap_byte, _)| wrap_byte))
 }
 
 /// Wrap a long line into a short prefix and a suffix
